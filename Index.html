@@ -13,19 +13,26 @@
 body {
   margin: 0;
   height: 100vh;
-  background: radial-gradient(circle at center, #1c1516, #090606);
   font-family: 'Playfair Display', serif;
   color: #f3efea;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  /* background image */
+  background:
+    linear-gradient(rgba(20,10,10,0.65), rgba(20,10,10,0.65)),
+    url("hug-bg.jpg") center / cover no-repeat;
+
   transition: background 2s ease;
 }
 
-/* Warmer background when hug starts */
+/* Warmer tone when hug starts */
 body.hugged {
-  background: radial-gradient(circle at center, #3b2326, #140a0b);
+  background:
+    linear-gradient(rgba(40,16,16,0.75), rgba(40,16,16,0.75)),
+    url("hug-bg.jpg") center / cover no-repeat;
 }
 
 /* Arms */
@@ -34,7 +41,7 @@ body.hugged {
   top: 0;
   width: 60%;
   height: 100%;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.06), rgba(0,0,0,0.6));
+  background: radial-gradient(circle at center, rgba(255,255,255,0.08), rgba(0,0,0,0.75));
   transition: transform 2.2s cubic-bezier(.7,.1,.2,1);
   z-index: 1;
 }
@@ -62,9 +69,7 @@ body.hugged .right { transform: translateX(-60%); }
   transition: opacity 1.2s ease;
 }
 
-body.hugged .text {
-  opacity: 1;
-}
+body.hugged .text { opacity: 1; }
 
 .name {
   font-family: 'Dancing Script', cursive;
@@ -77,13 +82,18 @@ body.hugged .text {
 
 body.hugged .name { opacity: 1; }
 
+/* Bottom hint FIXED */
 .hint {
-  position: absolute;
-  bottom: 40px;
+  position: fixed;
+  bottom: 35px;
+  left: 0;
   width: 100%;
   text-align: center;
-  opacity: 0.6;
+  opacity: 0.7;
   font-size: 14px;
+  letter-spacing: 1px;
+  pointer-events: none;
+  transition: opacity 1s ease;
 }
 </style>
 </head>
@@ -96,8 +106,9 @@ body.hugged .name { opacity: 1; }
 <div class="container">
   <div class="text" id="msg">Tap to come closer</div>
   <div class="name" id="name">Pranathi 🤍</div>
-  <div class="hint">just once</div>
 </div>
+
+<div class="hint" id="hint">just once</div>
 
 <script>
 let started = false;
@@ -107,6 +118,7 @@ function startHug() {
   started = true;
 
   document.body.classList.add("hugged");
+  document.getElementById("hint").style.opacity = "0";
 
   const messages = [
     "Some hugs fix everything.",
