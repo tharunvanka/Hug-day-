@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hug Day 🤍</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle at center, #1c1516, #090606);
+  font-family: 'Playfair Display', serif;
+  color: #f3efea;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 2s ease;
+}
+
+/* Warmer background when hug starts */
+body.hugged {
+  background: radial-gradient(circle at center, #3b2326, #140a0b);
+}
+
+/* Arms */
+.arm {
+  position: fixed;
+  top: 0;
+  width: 60%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.06), rgba(0,0,0,0.6));
+  transition: transform 2.2s cubic-bezier(.7,.1,.2,1);
+  z-index: 1;
+}
+
+.left  { left: -60%; border-radius: 0 50% 50% 0; }
+.right { right: -60%; border-radius: 50% 0 0 50%; }
+
+body.hugged .left  { transform: translateX(60%); }
+body.hugged .right { transform: translateX(-60%); }
+
+/* Text */
+.container {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  width: 85%;
+  max-width: 420px;
+}
+
+.text {
+  font-size: 24px;
+  line-height: 1.8;
+  min-height: 120px;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+body.hugged .text {
+  opacity: 1;
+}
+
+.name {
+  font-family: 'Dancing Script', cursive;
+  font-size: 46px;
+  color: #E6C78A;
+  margin-top: 18px;
+  opacity: 0;
+  transition: opacity 1.6s ease 3s;
+}
+
+body.hugged .name { opacity: 1; }
+
+.hint {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  text-align: center;
+  opacity: 0.6;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body onclick="startHug()">
+
+<div class="arm left"></div>
+<div class="arm right"></div>
+
+<div class="container">
+  <div class="text" id="msg">Tap to come closer</div>
+  <div class="name" id="name">Pranathi 🤍</div>
+  <div class="hint">just once</div>
+</div>
+
+<script>
+let started = false;
+
+function startHug() {
+  if(started) return;
+  started = true;
+
+  document.body.classList.add("hugged");
+
+  const messages = [
+    "Some hugs fix everything.",
+    "You don’t have to explain anything.",
+    "Just stay…",
+    "right here with me.",
+    "Happy Hug Day"
+  ];
+
+  let i = 0;
+  const msg = document.getElementById("msg");
+
+  setTimeout(()=>{
+    const interval = setInterval(()=>{
+      msg.innerHTML = messages[i];
+      i++;
+      if(i >= messages.length) clearInterval(interval);
+    }, 2200);
+  },1200);
+}
+</script>
+
+</body>
+</html>
